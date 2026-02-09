@@ -16,6 +16,8 @@ function App() {
   const [cartQuantity, setCartQuantity] = useState(0)
   const [totalSum, setTotalSum] = useState(0)
 
+  /*useEffect kjøres automatisk når noe i cart listen endres.
+    Dette er basert på at cart ligger i firkantparenteser.*/
   useEffect(() => {
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0)
     setCartQuantity(totalQuantity)
