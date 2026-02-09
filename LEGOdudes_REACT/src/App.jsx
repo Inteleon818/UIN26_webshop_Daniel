@@ -1,106 +1,51 @@
 import './style/lego.css'
 import {products} from './assets/legodudes.js'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Cart from './components/Cart.jsx'
+import CategoryTitle from './components/CategoryTitle.jsx'
+import Header from './components/Header.jsx'
+import Nav from './components/Nav.jsx'
+import Products from './components/Products.jsx'
+import { Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout.jsx'
 
 function App() {
 
   const [isOpen, setIsOpen] = useState(false)
+  const [cart, setCart] = useState([])
+  const [cartQuantity, setCartQuantity] = useState(0)
+  const [totalSum, setTotalSum] = useState(0)
 
-  function Header({setIsOpen}) {
+  useEffect(() => {
+    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0)
+    setCartQuantity(totalQuantity)
+
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) 
+    setTotalSum(total)
+  }, [cart])
+
+  function Page() {
     return(
-      <header>
-        <h1>
-          <a href="index.html">
-              <img src="website_images/LD_logo.svg" alt="LEGO dudes"/>
-          </a>
-        </h1>
-        <button id="cart-button" onClick={() => setIsOpen((prev) => !prev)}>
-          <div id="cart-quantity">0</div>
-          <img src="website_images/legocart.svg" alt="Handlevogn"/>
-        </button>
-      </header>
-    )
-  }
-
-  function Nav() {
-    return (
-      <nav>
-        <a href="#">City</a>
-        <a href="#">Ninjago</a>
-        <a href="#">Castles amd Knights</a>
-        <a href="#">Marine and Pirates</a>
-        <a href="#">Movie characters</a>
-      </nav>
-    )
-  }
-
-  function CategoryTitle() {
-    return (
-      <h2>Ninjago</h2>
-    )
-  }
-
-  function Products({products}) {
-    return (
-      <div id="product-list">
-        {products.map(p => <ProductCard key={p.prodid} p={p}/>)}
-      </div>
-    )
-  }
-
-  function ProductCard({p}) {
-    const handleClick = () => {console.log("Legg i handlekurv.")}
-    return (
-      <article className="product-card">
-        <img src={`website_images/PROD_${p.imagefile}`} alt={p.title}/>
-        <a href="#">{p.category}</a>
-        <h3>{p.title}</h3>
-        <p>Kr. {p.price},-</p>
-        <button onClick={handleClick}>Legg til handlevogn</button>
-      </article>
-    )
-  }
-
-  function Cart({isOpen}) {
-    return (
-      <section id="cart" className={isOpen ? "" : "hidden"}>
-        <table id ="cart-items">
-          <tbody>
-            <tr>
-              <td>Ingen varer i handlevognen enda.</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Total pris: <span id="total-price">0</span>NOK</p>
-      </section>
-    )
-  }
-
-  function CartItem() {
-    return (
-      <tr>
-        <td className="title">${product.title}</td>
-        <td className="price">${product.price}</td>
-        <td className="quantity">${ci.quantity}</td>
-        <td className="delete"><button onClick="deleteFromCart(${product.prodid})">X</button></td>
-      </tr>
-    )
+      <main>
+        <CategoryTitle />
+        <Products products={products} setCart={setCart}/>
+      </main>
+    ) 
   }
 
   return (
-    <div id="container">
-      <Header setIsOpen={setIsOpen}/>
-      <Nav />
-      <main>
-        <CategoryTitle />
-        <Products products={products}/>
-      </main>
-      <Cart isOpen={isOpen}/>
-    </div>
+    <Layout setIsOpen={setIsOpen} cartQuantity={cartQuantity} children isOpen={isOpen} cart={cart} setCart={setCart} totalSum={totalSum}>
+      <Routes>
+        <Route index element={<Page />} />
+        <Route path='city' element={<CategoryTitle title="City"/>} />
+        <Route path='ninjago' element={<CategoryTitle title="Ninjago" />} />
+        <Route path='castles-and-knights' element={<CategoryTitle title="Castles and Knights" />} />
+        <Route path='marine-and-pirates' element={<CategoryTitle title="Marine and Pirates" />} />
+        <Route path='movie-characters' element={<CategoryTitle title="Movie characters" />} />
+      </Routes>
+    </Layout>
   )
 }
 
 export default App
-
-
 
