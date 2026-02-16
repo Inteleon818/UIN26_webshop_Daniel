@@ -21,7 +21,7 @@ export default function Category()
 
     return (
         <main>
-            (<h1>{apiData?.name}</h1>)
+            <h1>{apiData?.name}</h1>
             <section>
                 <h2>Bilder</h2>
                 <img src={apiData?.sprites?.front_default} alt={apiData?.name} />
