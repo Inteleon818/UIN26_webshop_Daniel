@@ -8,7 +8,6 @@ import Category from './components/Category'
 import CategoryLayout from './components/CategoryLayout'
 
 function App() {
-
   return (
     <Layout>
       <Routes>
@@ -23,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default App 
