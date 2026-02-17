@@ -5,17 +5,17 @@ export default function Category()
 {
     const [apiData, setApiData] = useState([])
     const {slug} = useParams()
-    const getSingleData = async() => 
-    {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`)
-        const data = await response.json()
-        setApiData(data)
-    }
 
     console.log(apiData)
 
     useEffect(() => 
     {
+        const getSingleData = async() => 
+        {
+            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`)
+            const data = await response.json()
+            setApiData(data)
+        }
         getSingleData()
     }, [slug])
 

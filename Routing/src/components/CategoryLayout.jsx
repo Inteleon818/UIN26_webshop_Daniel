@@ -5,18 +5,19 @@ export default function CategoryLayout()
 {
     const [apiData, setApiData] = useState([])
     const [apiEndpoint, setApiEndpoint] = useState()
-    const getData = async() => 
-    {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon/?offset=960&limit=10')
-        const data = await response.json()
-        setApiData(data.results)
-    }
 
     console.log(apiData)
     console.log(apiEndpoint)
 
+    //https://dev.to/stlnick/useeffect-and-async-4da8
     useEffect(() => 
     {
+        const getData = async() => 
+        {
+            const response = await fetch('https://pokeapi.co/api/v2/pokemon/?offset=960&limit=10')
+            const data = await response.json()
+            setApiData(data.results)
+        }
         getData()
     }, [])
 
