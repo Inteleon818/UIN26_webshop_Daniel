@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useOutletContext, useParams } from "react-router-dom"
 
 export default function Category()
 {
-    const [apiData, setApiData] = useState([])
     const {slug} = useParams()
 
-    console.log(apiData)
+    const {apiEndpoint, defaultApiUrl} = useOutletContext()
+    const [apiData, setApiData] = useState([])
+    const [spritesImg, setSpritesImg] = useState([])
+
+    const getSingleData = async() => 
+    {
+        //Unngå "Uncaught (in promise) SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON"
+        //Husk å ta imot "defaultApiUrl fra CategoryLayout_Outlet_context"
+        const response = await fetch(apiEndpoint ? apiEndpoint : defaultApiUrl+slug)
+        const data = await response.json()
+        setApiData(data)
+    }
+
+    console.log("Dette er Category_apiData: ", apiData)
+    console.log("Dette er Category_apiEndpoint: ", apiEndpoint)
 
     useEffect(() => 
     {
-        const getSingleData = async() => 
-        {
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`)
-            const data = await response.json()
-            setApiData(data)
-        }
         getSingleData()
-    }, [slug])
+    }, [slug, apiEndpoint])
+
+    console.log("Pokemon bilder:", spritesImg)
 
     return (
         <main>
