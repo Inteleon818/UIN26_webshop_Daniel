@@ -14,9 +14,10 @@ export default function Layout({children})
             </nav>
             {/*Rendrer alle barnekomponentene til Layout*/}
             {children}
+            {/*Footer vises på alle sider*/}
             <footer>
                 <p>2026 Utvikling av interaktive nettsider - React router</p>
             </footer>
         </>
     )
-}
+} 

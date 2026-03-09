@@ -5,7 +5,7 @@ import CategoryCard from "./CategoryCard";
 export default function Categories()
 {
     const {slug} = useParams()
-
+    /*Henter verdiene av apiEndpoint og defaultApiUrl fra CategoryLayout sin Outlet*/
     const {apiEndpoint, defaultApiUrl} = useOutletContext()
     const [apiData, setApiData] = useState()
 
@@ -19,16 +19,18 @@ export default function Categories()
         setApiData(data.results)
     }
 
+    console.log("Dette er Categories_apiData", apiData)
+
     useEffect(() => 
     {
         getData()
     }, [slug])
 
-    console.log("Dette er Categories_apiData", apiData)
-
     return (
         <main>
+            {/*Tittel er basert på slug*/}
             <h1>{slug}</h1>
+            {/*Lager en CategoryCard med informasjon, for hvert objekt i apiData*/}
             {apiData?.map((item) => <CategoryCard key={item.name} name={item.name} url={item.url} />)}
         </main>
     )

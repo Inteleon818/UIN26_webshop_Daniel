@@ -4,6 +4,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 export default function CategoryCard({name, url}) 
 {
     const {slug} = useParams()
+    /*Henter setApiEndpoint funksjonen fra CategoryLayout sin Outlet*/
     const {setApiEndpoint} = useOutletContext()
     //useState skal ha krøllparenteser for objekter, blokkparenteser for lister.
     const [apiData, setApiData] = useState({})
@@ -15,7 +16,8 @@ export default function CategoryCard({name, url})
         setApiData(data)
     }
 
-    console.log("Dette er CategoryCard_slug", slug)
+    console.log("Dette er CategoryCard_apiData:", apiData)
+    console.log("Dette er CategoryCard_slug:", slug)
 
     useEffect(() => 
     {

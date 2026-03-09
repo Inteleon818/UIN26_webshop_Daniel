@@ -18,7 +18,7 @@ function App() {
         <Route path='categories' element={<CategoryLayout />} >
           <Route index element={<h1>Kategorier</h1>} />
           <Route path=':slug' element={<Categories />} />
-          <Route path=':slug/:category' element={<Category />} />
+          <Route path=':slug/:pokemon_name' element={<Category />} />
         </Route>
         <Route path='about' element={<About />} />
       </Routes>
@@ -26,4 +26,4 @@ function App() {
   )
 }
 
-export default App 
+export default App

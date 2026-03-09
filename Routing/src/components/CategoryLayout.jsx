@@ -1,9 +1,11 @@
 //Importerer Outlet som brukes til visning av barneruter.
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { useEffect, useState } from 'react'
 
 export default function CategoryLayout()
 {
+    /*slug henter den siste verdien gitt i url-en*/
+    const {slug} = useParams()
     const [apiData, setApiData] = useState([])
     const [apiEndpoint, setApiEndpoint] = useState()
 
@@ -13,32 +15,34 @@ export default function CategoryLayout()
     {
         const response = await fetch(defaultApiUrl)
         const data = await response.json()
+        /*apiData får verdier som representerer
+        unike url-er basert på siste verdi, der veiene leder til forskjellig data fra hverandre*/
         const {pokemon, type, item, ability} = data
         setApiData({pokemon, type, item, ability})
     }
 
+    console.log("Dette er CategoryLayout_apiData: ", apiData)
+    console.log("Dette er CategoryLayout_apiEndpoint: ", apiEndpoint)
+
     useEffect(() => 
     {
         getData()
-    }, [])
-
-    console.log("Dette er CategoryLayout_apiData: ", apiData)
-    console.log("Dette er CategoryLayout_Object.keys(apiData)", Object.keys(apiData))
-    console.log("Dette er CategoryLayout_apiEndpoint: ", apiEndpoint)
+    }, [slug])
 
     return (
         <>
             <nav className='main-nav'>
-                {/*Gjør om apiData sine verdier til nøkkel-verdipar
-                   for så å gjennom disse verdiene ved å
-                   lage en lenke til hver av dem
-                   der api-url-en er basert på default api-url-en + den tilhørende item-verdien.*/}
+                {/*Gjør om nøkkel-verdiparene til listeobjekter slik at de kan mappes igjennom.
+                   Deretter vil det gjennom disse verdiene lages en lenke til hver
+                   api-url i apiData basert på default api-url-en + den tilhørende item-verdien.*/}
                 {Object.keys(apiData)?.map((item) => <Link key={item} to={item} onClick={() => item == "pokemon" ? setApiEndpoint(defaultApiUrl + item + "?offset=983") : setApiEndpoint(defaultApiUrl + item)}>{item}</Link>)}
-                {/*apiData?.map((item) => <Link key={item.name} to={item.name} onClick={() => setApiEndpoint(item.url)}>{item.name}</Link>)*/}
             </nav>
-            {/*Barneruter ligger i Outlet.
-               Når vi er på /categories, så vises <Categories />.
-               Når vi er på /category, så vises <Category />*/}
+            {/*
+                Barneruter ligger i Outlet.
+                Når vi er på /categories, så vises <Categories />.
+                Når vi er på /category, så vises <Category />
+                Det bestemmes av routene definert i App.jsx
+            */}
             <Outlet context={{apiEndpoint, defaultApiUrl, setApiEndpoint}} />
         </>
     )
